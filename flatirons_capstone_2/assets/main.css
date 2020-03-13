@@ -1,0 +1,124 @@
+.head {
+    font-family: "Courier", Courier, monospace;
+    font-size: 3.5em;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+    font-weight: normal
+}
+
+.subHead {
+    border-top: 1px solid gold;
+    border-bottom: 1px solid gold;
+    background-color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: normal;
+    margin: 5px -40px 40px -40px;
+}
+
+.mainBox {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.subBox {
+    margin: auto;
+    max-width: 760px;
+    /* border: 1px solid black; */
+}
+
+.thumbBoxLeft {
+    float: left;
+    padding: 15px 0px 32px 0px;
+}
+
+.thumbBoxRight {
+    float: left;
+    padding: 32px 0px 15px 0px;
+}
+
+.thumbs {
+    width: 350px;
+    padding: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+    /* border: 1px solid black; */
+}
+
+.thumbDesc {
+    /* border: 1px solid black;  */
+    font-family: Impact, Charcoal, sans-serif;
+    padding: 30px 0px 30px 0px;
+    font-weight: bold;
+    font-size: 3em;
+}
+
+#hist {
+    float: left;
+    /* height: 500px; */
+    width: 100%;
+}
+
+#hist_graph {
+    /* margin: 0px, -100px, 0px, -100px; */
+    /* height: 400px; */
+    /* width: 350px; */
+    /* border: 1px solid black; */
+}
+
+#feature_graph {
+    display: inline-block;
+    margin-right: -100px;
+    /* border: 1px solid black; */
+    float: left;
+    margin-right: 100px;
+}
+
+#feature_radio {
+    /* border: 1px solid black; */
+    position: relative;
+    /* width: 300px;
+    height: 150px; */
+    left: -150px;
+    display: inline-block;
+    background-color: #ddd;
+    padding: 5px 10px;
+    font-family: sans-serif, Arial;
+    font-size: .7em;
+    border: 2px solid #444;
+    border-radius: 4px;
+}
+
+#cat_div {
+    height: 425px;
+    width: 500px;
+    margin-right: -100px;
+    float: right;
+    /* padding: 5px; */
+    border: 3px inset gold;
+    border-radius: 5px;
+}
+
+#cat_box {
+    height: 349px;
+    overflow: auto;
+    padding: 20px;
+    width: 300px;
+    float: left;
+    text-align: left;
+    display: inline-block;
+}
+
+#cat_box_2 {
+    width: 150px;
+    display: inline-block;
+    text-align: center;
+    line-height: 1.1;
+    font-size: 1.1em
+/* float: right; */
+}
