@@ -1,8 +1,13 @@
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+import plotly.offline as pyo
+import seaborn as sns
 import pandas as pd
 import numpy as np
 import requests
+import spacy
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error as mse
 from sklearn.metrics import r2_score
@@ -28,6 +33,8 @@ from keras.layers import Dropout, Activation, Bidirectional, GlobalMaxPool1D
 from keras.models import Sequential
 from keras import initializers, regularizers, constraints, optimizers, layers
 from keras.preprocessing import text, sequence
+
+nlp = spacy.load('en_core_web_sm')
 
 def format_titles(title_list):
     """This function formats the movie titles in such a way that they can be
@@ -185,7 +192,9 @@ def clean(word_list):
             result = result.replace(char, '')
     
     return result
-def script_classifiers(X, y, classifier, cmap=plt.cm.Reds, use_tfidf=True):
+
+def script_classifiers(X, y, classifier, test_size=.3, cmap=plt.cm.Reds, use_tfidf=True,
+                       use_split_resample=True):
     """This function takes in values for a classifier and runs them through
     a pipe. Generates scores and a confusion matrix plot.
     
@@ -208,13 +217,13 @@ def script_classifiers(X, y, classifier, cmap=plt.cm.Reds, use_tfidf=True):
     
     # Typical train test split to retain data for validation.
     X_train, X_test, y_train, y_test = train_test_split(X, y,
-                                                    test_size=.3,
+                                                    test_size=test_size,
                                                     random_state=42)
     
     # There a few more bad scripts than good ones, so I'll make them even.
     rus = RandomUnderSampler(random_state=42)
     X_resampled, y_resampled = rus.fit_resample(pd.DataFrame(X_train), y_train)
-    
+
     # This is necessary for putting X into the correct format if there is only 
     # one column, as it comes out of the resampler a DataFrame when the
     # classifier actuallyl wants a series if its only one column.
@@ -237,7 +246,7 @@ def script_classifiers(X, y, classifier, cmap=plt.cm.Reds, use_tfidf=True):
 #     scaler = StandardScaler
 #     X_resampled_scaled = scaler.fit_transform(X_resampled)
 #     X_test_scaled = scaler.transform(X_test)
-    
+
     # Fitting the pipeline containing the tfidf processor and classifier.
     pipe.fit(X_resampled, y_resampled)
     
@@ -283,6 +292,75 @@ def script_classifiers(X, y, classifier, cmap=plt.cm.Reds, use_tfidf=True):
 #     Image(graph.create_png()) 
 #     return Image(graph.create_png()) 
 
+def stacked_classifier(X, y, classifier, cmap=plt.cm.Reds, use_tfidf=True):
+    """This function takes in values for a classifier and runs them through
+    a pipe. Used specifically to geenrate the first model for a stacked set.
+    
+    Parameters:
+        
+        X: DataFrame
+            Features and values to be used in model.
+            
+        y: Series
+            Target variable for classifying.
+            
+        Classifier: Classifier
+            Which classifier to be used for training the model.
+        
+        cmap: pyplot color map
+            Which color map to use for the confusion matrix plot.
+            
+        use_tfidf: bool
+            Whether to use tfidf on feature data prior to running model.
+            
+    Returns:
+        numpy array of predictions."""
+    
+    # Provides the option of using tfidf in case this is just using scripts 
+    # attributes and not text embedding or vectorization
+    if use_tfidf == False:
+        pipe = Pipeline([('clf', classifier)])
+    else:
+        
+        # These tfidf hyper-parameters have been tested via grid-search
+        # elsewhere and found to be optimal.
+        pipe = Pipeline([('tfidf', TfidfVectorizer(max_df=.95, min_df=.1,
+                                                  max_features=5000,
+                                                  ngram_range=(1,2))), 
+                         ('clf', classifier)])
+    
+    # Fitting the pipeline containing the tfidf processor and classifier.
+    pipe.fit(X, y)
+    
+    # Creating predicted data.
+    y_pred = pipe.predict(X)
+    
+    # Running metrics and creating a confusion matrix visual of training data.
+    print(classification_report(y, y_pred))
+
+    confusion = confusion_matrix(y, y_pred)
+    
+    plot_confusion_matrix(confusion, figsize=(7,7), colorbar=True,
+                      show_normed=True, cmap=cmap);
+    plt.show();
+    
+    # If there is a decision function in this classifier, we'll use it 
+    # to create an ROC AUC graph.
+    try:
+        y_score = pipe.decision_function(X)
+        fpr, tpr, thresholds = roc_curve(y, y_score)
+        roc_auc = auc(fpr, tpr)
+        print('roc_auc score: ', roc_auc)
+
+        plt.plot(fpr, tpr, color='darkorange', lw=2)
+        plt.title('Receiver Operating Characteristic (ROC) Curve')
+        plt.ylabel('True Positive Rate')
+        plt.xlabel('False Positive Rate')
+        plt.show();
+    except:
+        pass
+
+    return y_pred
 
 def hybrid_classifiers(X_train, X_test, y_train, y_test, classifier, 
                        cmap=plt.cm.Reds, use_tfidf=True):
@@ -368,6 +446,8 @@ def hybrid_classifiers(X_train, X_test, y_train, y_test, classifier,
         plt.show();
     except:
         pass
+
+    return y_pred
     
 #     # Creating a decision tree classifier tree graph because it's cool.
 # #     if classifier == DecisionTreeClassifier():
@@ -441,7 +521,7 @@ def ceci_nest_pas_une_pipe(X, y, text_to_vec, classifier,
    
     # This is necessary for putting X into the correct format if there is only 
     # one column, as it comes out of the resampler a DataFrame when the
-    # classifier actuallyl wants a series if its only one column.
+    # classifier actually wants a series if its only one column.
     if type(X_resampled) == pd.core.series.Series:
         X_resampled = X_resampled.iloc[:, 0]
     
@@ -522,8 +602,8 @@ def ceci_nest_pas_une_pipe(X, y, text_to_vec, classifier,
 #     return Image(graph.create_png()) 
 
 def hybrid_classifier_combo(X_train, X_test, X2_train, X2_test,
-                        	   y_train, y_test, X2,  
-                           	   cmap=plt.cm.Reds):
+                            y_train, y_test, classifier,
+                            cmap=plt.cm.Reds, feature_importance=False):
     """This function takes in values for a classifier and runs them through
     a pipe. Generates scores and a confusion matrix plot. As opposed with 
     the above 'script_classifiers' function, this one does not use a pipe,
@@ -553,28 +633,38 @@ def hybrid_classifier_combo(X_train, X_test, X2_train, X2_test,
     # before the classifier.
     tfidf = TfidfVectorizer(max_df=.95, min_df=.1, max_features=5000,
                              ngram_range=(1,2))
-    X2 = tfidf.fit_transform(X2_train)
-    X2_test = tfidf.transform(X2_test)
+    X2_train = tfidf.fit_transform(X2_train)
+    X2_test = tfidf.transform(X2_test)    
 
     # Creating a sparse DataFrame to house both the features and the 
     # processed text.
-    X2_temp = pd.SparseDataFrame(X2_train, columns=tfidf.get_feature_names(),
-                               default_fill_value=0)  
-                                                        
-    X2_temp2 = pd.SparseDataFrame(X2_test, columns=tfidf.get_feature_names(),
+    X_temp = pd.SparseDataFrame(X2_train, columns=tfidf.get_feature_names(),
                                default_fill_value=0)
-
+                                                        
+    X_temp2 = pd.SparseDataFrame(X2_test, columns=tfidf.get_feature_names(),
+                               default_fill_value=0)
+    
     # Necessary for next step.
 #     X_train = X_train.reset_index(drop=True)
 #     X_test = X_test.reset_index(drop=True)
-
+    
     # Combining text matrix with script attributes.
-    for column in X:
+    for column in X_train:
         X_temp[column] = X_train[column]
         X_temp2[column] = X_test[column]
     X_train = X_temp
     X_test = X_temp2
+
+    # I really wish I knew why this was necessary. I really do. But for whatever
+    # reason, I keep getting just a few null values at this point in the function.
+    X_test.fillna(0,inplace=True)
+    X_train.fillna(0,inplace=True)
     
+#     temp = pd.DataFrame(X2_train, columns=['temp'])
+#     display(X_train.iloc[[40, 69, 101, 106, 147, 175, 264, 303, 343, 371, 392,
+#              464, 656, 811, 963, 1099, 2024, 2044, 2066, 2265, 2554,2560]])
+    
+    X_train.fillna(0,inplace=True)
     # Standard train-test split.
 #     X_train, X_test, y_train, y_test = train_test_split(X, y,
 #                                                     test_size=.3,
@@ -605,6 +695,12 @@ def hybrid_classifier_combo(X_train, X_test, X2_train, X2_test,
 #     plot_confusion_matrix(confusion, figsize=(7,7), colorbar=True,
 #                   show_normed=True, cmap=cmap);
 #     plt.show();
+
+#     temp = pd.DataFrame(X_test, columns=['temp'])
+#     print(temp[temp['temp'].isna() == True].index)
+
+    # temp = X_test.CCONJ.isna() == True
+    # display(temp)
     
     # The below is for creating the test scores.
     y_pred = clf.predict(X_test)
@@ -650,21 +746,6 @@ def hybrid_classifier_combo(X_train, X_test, X2_train, X2_test,
             plt.show()
         except: 
             pass
-    
-    
-#     # Creating a decision tree classifier tree graph because it's cool.
-# #     if classifier == DecisionTreeClassifier():
-#     dot_data = export_graphviz(classifier, out_file=None, 
-# #                                    feature_names=X.columns, 
-#                                class_names=np.unique(y).astype('str'), 
-#                                filled=True, rounded=True, 
-#                                special_characters=True)
-
-#     # Draw graph
-#     graph = graph_from_dot_data(dot_data)  
-#     # Show graph
-#     Image(graph.create_png()) 
-#     return Image(graph.create_png()) 
 
 def grid_search_a(X, y, classifier, param_grid, use_tfidf=True):
     """Performs a grid search to optimize parameters for classification models.
@@ -731,137 +812,6 @@ def grid_search_a(X, y, classifier, param_grid, use_tfidf=True):
 
     # Return the parameters so they can be seen and contemplated.
     return grid_search.best_params_
-    
-    
-def hybrid_classifier_combo(X_train, X_test, X2_train, X2_test,
-                            y_train, y_test, classifier,
-                            cmap=plt.cm.Reds, feature_importance=False):
-    """This function takes in values for a classifier and runs them through
-    a pipe. Generates scores and a confusion matrix plot. As opposed with 
-    the above 'script_classifiers' function, this one does not use a pipe,
-    lending some additional flexibility between vectorization and modeling.
-    Generally to be used with combining features and word vectors.
-    
-    Parameters:
-        
-        X: DataFrame
-            Features and values to be used in model.
-            
-        y: Series
-            Target variable for classifying.
-            
-        text_to_vec: word vector matrix
-            In addition to features, adds a word vector matrix to join with
-            the other features for modeling.
-            
-        Classifier: Classifier
-            Which classifier to be used for training the model.
-        
-        cmap: pyplot color map
-            Which color map to use for the confusion matrix plot."""
-
-#     if text_to_vec:
-    # Putting the TfidfVectorizer up front so I can fiddle with things
-    # before the classifier.
-    tfidf = TfidfVectorizer(max_df=.95, min_df=.1, max_features=5000,
-                             ngram_range=(1,2))
-    X2_train = tfidf.fit_transform(X2_train)
-    X2_test = tfidf.transform(X2_test)
-
-    # Creating a sparse DataFrame to house both the features and the 
-    # processed text.
-    X_temp = pd.SparseDataFrame(X2_train, columns=tfidf.get_feature_names(),
-                               default_fill_value=0)  
-                                                        
-    X_temp2 = pd.SparseDataFrame(X2_test, columns=tfidf.get_feature_names(),
-                               default_fill_value=0)
-
-    # Necessary for next step.
-#     X_train = X_train.reset_index(drop=True)
-#     X_test = X_test.reset_index(drop=True)
-
-    # Combining text matrix with script attributes.
-    for column in X_train:
-        X_temp[column] = X_train[column]
-        X_temp2[column] = X_test[column]
-    X_train = X_temp
-    X_test = X_temp2
-    
-    # Standard train-test split.
-#     X_train, X_test, y_train, y_test = train_test_split(X, y,
-#                                                     test_size=.3,
-#                                                     random_state=42)
-    
-    # There a few more bad scripts than good ones, so I'll make them even.
-    rus = RandomUnderSampler(random_state=42)
-    X_resampled, y_resampled = rus.fit_resample(pd.DataFrame(X_train), y_train)
-   
-    # This is necessary for putting X into the correct format if there is only 
-    # one column, as it comes out of the resampler a DataFrame when the
-    # classifier actuallyl wants a series if its only one column.
-#     if type(X_resampled) == pd.core.series.Series:
-#         X_resampled = X_resampled.iloc[:, 0]
-    
-    # Classifier can be whatever the user has entered as an argument. 
-    clf = classifier
-    clf.fit(X_resampled, y_resampled)
-    
-#     # The below is for creating the train scores.
-#     y_train_pred = clf.predict(X_train)
-    
-#     # Printing out metrics and confusion matrix visual for training.
-#     print(classification_report(y_train, y_train_pred))
-#     print('Accuracy: ', accuracy_score(y_train, y_train_pred))
-
-#     confusion = confusion_matrix(y_train, y_train_pred)
-#     plot_confusion_matrix(confusion, figsize=(7,7), colorbar=True,
-#                   show_normed=True, cmap=cmap);
-#     plt.show();
-    
-    # The below is for creating the test scores.
-    y_pred = clf.predict(X_test)
-    
-    # Printing out metrics and confusion matrix visual for testing.
-    print(classification_report(y_test, y_pred))
-    print('Accuracy: ', accuracy_score(y_test, y_pred))
-
-    confusion = confusion_matrix(y_test, y_pred)
-    plot_confusion_matrix(confusion, figsize=(7,7), colorbar=True,
-                      show_normed=True, cmap=cmap);
-    plt.show();
-    
-    # If there is a decision function in this classifier, we'll use it 
-    # to create an ROC AUC graph.
-    try:
-        y_score = classifier.decision_function(X_test)
-        fpr, tpr, thresholds = roc_curve(y_test, y_score)
-        roc_auc = auc(fpr, tpr)
-        print('roc_auc score: ', roc_auc)
-
-        plt.plot(fpr, tpr, color='darkorange', lw=2)
-        plt.title('Receiver Operating Characteristic (ROC) Curve')
-        plt.ylabel('True Positive Rate')
-        plt.xlabel('False Positive Rate')
-        plt.show();
-    except:
-        pass
-    
-    if feature_importance:  
-        try:
-            print(pd.Series(clf.feature_importances_,
-                      index=X_train.columns).sort_values(ascending=False).head(200))
-            df_importance = pd.Series(clf.feature_importances_, 
-                                      index=X_train.columns)
-            df_imp_export = df_importance.sort_values(ascending=False)
-            df_importance = df_importance.sort_values(ascending=True).tail(200)
-        #         df_importance.index = [labels[x] for x,y in df_importance]
-            df_importance.plot(kind='barh', figsize=(8,50))
-            plt.title('Most Important Features')
-            plt.ylabel('Feature Name')
-            plt.xlabel('Feature Importance')
-            plt.show()
-        except: 
-            pass
             
 def feature_graphics(df, col_start, col_end, add_columns=None, scatterdim=(1600,1600), 
                        figsize=(20,20), browser=False):
@@ -894,12 +844,9 @@ def feature_graphics(df, col_start, col_end, add_columns=None, scatterdim=(1600,
         list(df.columns).index(col_start):list(df.columns)\
                                                .index(col_end)+1]].copy()
     
-    # If the DataFrame is rotten_df_cut, we should add the RottenScores column.
-    try:
-        temp['RottenScore'] = df.RottenScores
-        color = rotten_df_cut.RottenScores/100
-    except:
-        pass
+    # If the DataFrame is rotten_df_cut, we should add the rotten_scores column.
+    temp['RottenScore'] = df.rotten_scores
+    color = df.rotten_scores/100
     
     # Moving data to format Plotly will understand for scatter matrix.
     dimensions = []
@@ -967,6 +914,22 @@ def stop_it(text, punct=False):
         
     return last_word
     
+def cut_down_dist(data1, data2, std_level, label_1, label_2):
+    std = data1.mean() \
+        + data1.std()*std_level
+    
+    plot_info_1 = data1.drop(data1[lambda x: x > std].index)
+    
+    std2 = data2.mean() \
+        + data2.std()*std_level
+    
+    plot_info_2 = data2.drop(data2[lambda x: x > std].index)
+
+    fig = plt.figure(figsize=(10,8))
+    sns.distplot(plot_info_1, label=label_1, bins=100, norm_hist=False)
+    sns.distplot(plot_info_2, label=label_2, bins=100, norm_hist=False)
+    plt.legend()
+    plt.show();    
 
 def top_words(words, max_features, min_df, max_df):
     """Takes in a series of documents and returns an ordered list of 

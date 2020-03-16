@@ -1,3 +1,15 @@
+h3 {
+    font-size: 2.3em;
+    font-family: 'courier new';
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 5px;
+    display: block;
+    clear: both;
+}
+
 .head {
     font-family: "Courier", Courier, monospace;
     font-size: 3.5em;
@@ -17,7 +29,7 @@
     text-align: center;
     font-size: 1.5em;
     font-weight: normal;
-    margin: 5px -40px 40px -40px;
+    margin: 5px -40px 25px -40px;
 }
 
 .mainBox {
@@ -29,7 +41,16 @@
 .subBox {
     margin: auto;
     max-width: 760px;
-    /* border: 1px solid black; */
+}
+
+.textBlock {
+    text-align: left;
+    width: 100%;
+    /* margin-bottom: 40px; */
+    font-size: 1.2em;
+    line-height: 1.1;
+    display: inline-block;
+    margin: 0px;
 }
 
 .thumbBoxLeft {
@@ -47,6 +68,7 @@
     padding: 0px;
     margin-top: 0px;
     padding-top: 0px;
+    margin-top: 30px;
     /* border: 1px solid black; */
 }
 
@@ -71,12 +93,16 @@
     /* border: 1px solid black; */
 }
 
+.sidebar {
+    font-size: 1.2em;
+    line-height: 1.1em;
+    text-align: left;
+    margin-right: 30px;
+}
+
 #feature_graph {
     display: inline-block;
-    margin-right: -100px;
-    /* border: 1px solid black; */
-    float: left;
-    margin-right: 100px;
+    float: left; 
 }
 
 #feature_radio {
@@ -84,7 +110,8 @@
     position: relative;
     /* width: 300px;
     height: 150px; */
-    left: -150px;
+    top: 10px;
+    margin-bottom: 20px;
     display: inline-block;
     background-color: #ddd;
     padding: 5px 10px;
@@ -97,10 +124,10 @@
 #cat_div {
     height: 425px;
     width: 500px;
-    margin-right: -100px;
+    margin: 20px -75px 40px 20px;
     float: right;
     /* padding: 5px; */
-    border: 3px inset gold;
+    border: 3px inset yellow;
     border-radius: 5px;
 }
 
