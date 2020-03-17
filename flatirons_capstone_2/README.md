@@ -5,7 +5,7 @@ This project is an attempt to use machine learning methods to predict whether or
 
 Methods employed were 
 
-- Web scraping of multiple sites, using the beatifulsoup Python library.
+- Web scraping of multiple sites, using the beautifulsoup Python library.
 - Natural language processing, especially TFIDF vectorization and use of the spacy and nltk Python libraries to dissect the text.
 - Numerous classification models, including but not limited to random forests, support vector machines, and neural networks.
 - Matplotlib for various inline graphics.
@@ -14,7 +14,7 @@ Methods employed were
 
 First, some important files for navigating this repo:
 
-1. main.ipynb. This is the main technical notebook, which is a summary view of the 5 separate notebooks that make up this project. For the sake of size, some things have been kept out of this file, such as most of the models that weren't as strong as others, and the code for creating the dashboard and visualizations.
+1. main.ipynb. This is the main technical notebook, which is a summary view of the 5 separate notebooks that make up this project. For the sake of size, some things have been kept out of this file, such as most of the models that weren't as strong as others, and the code for creating the dashboard and visualizations. For all practical purposes, this can be considered the main notebook file, and the others supplementary, except perhaps for visuals.ipynb and functions.py.
 
 2. obtain.ipynb. This is the main file used for web scraping the necessary information from rottentomatoes, metacritic, and springfieldspringfield.
 
@@ -25,6 +25,10 @@ First, some important files for navigating this repo:
 5. modeling.ipynb. A large file, this is where I used roughly 30 models in attempting to find the best means of predicting screenplay value.
 
 6. visuals.ipynb. This is where I did all the work creating plotly graphs and embedding them into html using the python dash library.
+
+7. functions.py. This is where the various functions were kept, as they eventually took up a large portion of the notebook.
+
+
 
 Further links to come include the site for the interactive dashboard, and the blog post written about this project.
 
