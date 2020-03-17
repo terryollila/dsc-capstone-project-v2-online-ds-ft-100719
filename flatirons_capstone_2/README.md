@@ -176,11 +176,11 @@ A word cloud showed the top words from each side that were mutually exclusive to
 
 I created a horizontal bar chart to display some of the words that had overall importance in the modeling, which switched between the three by means of radio buttons, and to demonstrate the correlation for each.
 
-![important features](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/all_words.png
+![important features](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/all_words.png)
 
 And I used an interactive dropdown to show numerous features such as unique words, sentiment, and parts of speech. Here is an example:
 
-
+![word feature distribution plots](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/dist_example.png)
 
 # Interpretation
 
