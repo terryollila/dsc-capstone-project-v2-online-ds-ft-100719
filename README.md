@@ -169,7 +169,7 @@ For modeling, I used the extreme data from metacritic to train the models, then 
 
 My first set of models employ TFIDF Vectorization using a variety of classifiers. I then go into using only the engineered features such as parts of speech and word count. From there, I merge the TFIDF matrix with the features. Finally, I use a support vector classifier with TFIDF, then feed the results into a random forest model using engineered features. This produced the best result, with 68% accuracy, 64% true positive rate, and 72% true negative rate:
 
-![important features](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/conf_matrix.png)
+![important features](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/images/conf_matrix.png)
 
 I used support vector classifiers, decision trees, logistic regression, random forests, XG Boost, Naive-Bayes, and neural networks.
 
@@ -180,15 +180,15 @@ I followed this up with a regression analysis using only the rottentomatoes data
 For bringing the statistical information about the screenplays to life, I used an html dashboard that I coded using the plotly, dash, and wordcloud libraries in Python.
 A word cloud showed the top words from each side that were mutually exclusive to each other:
 
-![thumbs up/down word cloud](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/two_thumbs-md.png)
+![thumbs up/down word cloud](https://github.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/blob/master/images/two_thumbs-md.png?raw=true)
 
 I created a horizontal bar chart to display some of the words that had overall importance in the modeling, which switched between the three by means of radio buttons, and to demonstrate the correlation for each.
 
-![important features](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/all_words.png)
+![important features](https://github.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/blob/master/images/all_words.png?raw=true)
 
 And I used an interactive dropdown to show numerous features such as unique words, sentiment, and parts of speech. Here is an example:
 
-![word feature distribution plots](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/dist_example.png)
+![word feature distribution plots](https://github.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/blob/master/images/dist_example.png?raw=true)
 
 # Interpretation
 
