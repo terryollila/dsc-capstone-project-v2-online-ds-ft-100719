@@ -1,113 +1,214 @@
+# What's a Writer Worth?
+## Screenplay Science and the Value of a Few Good Words
 
-#  Final Project Requirements
+This project is an attempt to use machine learning methods to predict whether or not a film will be highly rated by critics based on the language of the screenplay.
 
-## Introduction
+Methods employed were 
 
-In this lesson, we'll discuss the requirements and expectations for our **Capstone Project**!
+- Web scraping of multiple sites, using the beautifulsoup Python library.
+- Natural language processing, especially TFIDF vectorization and use of the spacy and nltk Python libraries to dissect the text.
+- Numerous classification models, including but not limited to random forests, support vector machines, and neural networks.
+- Matplotlib for various inline graphics.
+- Web-based dashboard creation using plotly, dash, and wordcloud.
+- Latent Derichlet allocation for grouping films by language patterns.
 
-## Objectives
+First, some important files for navigating this repo:
 
-You will be able to:
+1. main.ipynb. This is the main technical notebook, which is a summary view of the 5 separate notebooks that make up this project. For the sake of size, some things have been kept out of this file, such as most of the models that weren't as strong as others, and the code for creating the dashboard and visualizations. For all practical purposes, this can be considered the main notebook file, and the others supplementary, except perhaps for visuals.ipynb and functions.py.
 
-* Describe all required aspects of the final project
-* Describe all required deliverables
-* Describe what constitutes a successful project
-* Describe what the experience of the project review should be like
+2. obtain.ipynb. This is the main file used for web scraping the necessary information from rottentomatoes, metacritic, and springfieldspringfield.
 
+3. scrubbing.ipynb. This is where the data from the sites listed above is cleaned to ensure integrity down the line.
 
-### Final Project Requirements
+4. eda.ipynb. An important part of this project, this is the exploratory data analysis file, where I did all of the work using nlp to dissect the screenplays.
 
-Congratulations on making it to the final project! It's been a long journey, but we can finally see the light at the end of the tunnel!
+5. modeling.ipynb. A large file, this is where I used roughly 30 models in attempting to find the best means of predicting screenplay value.
 
-<center><img src='https://raw.githubusercontent.com/learn-co-curriculum/dsc-capstone-project-v2/master/end-of-tunnel.gif'>
-<strong><em>Actual Footage of you seeing the light at the end of the tunnel</strong></em>
-</center>
+6. visuals.ipynb. This is where I did all the work creating plotly graphs and embedding them into html using the python dash library.
 
-Now that you've learned everything we have to teach you, it's time to show off and flex your data science muscles with your own **_Capstone Project_**! This project will allow you to showcase everything you've learned as a data scientist to by completing a professional-level data science project of your choosing. This project will be significantly larger than any project you've completed so far, and will be the crown jewel of your portfolio. A strong capstone project is the single most important thing you can do to get the attention of potential employers, so be prepared to put as much effort into this project as possible--the results are **_worth it!_**
-
-<center><img src='https://raw.githubusercontent.com/learn-co-curriculum/dsc-capstone-project-v2/master/milkshake.gif'>
-<strong><em>Your <s>milkshake</s> portfolio brings all the <s>boys</s> employers to <s>the yard</s> your inbox! </strong></em>
-</center>
-
-Let's take a look at the project requirements.
-
-### Topic requirements
-The projects are in a domain of your choosing.  Your project does not have to answer just one question, but may try to answer multiple questions in a domain, or subsequent questions.  (e.g. Now that we know _X_, what's the next question that comes from this?)  When choosing a topic, try to think through the "So what?" of your question.  
-
-* What are the possible outcomes you think you will find? 
-* How could a company or individual make use of your findings to benefit them?  What about your findings are _actionable_?
-
-You're completely free to choose any project topic that interests you. However, the project scope must be end-to-end, from data sourcing and cleaning all the way through tuning and analysis of your trained model(s). 
-
-Make sure to plan in advance for feasibility of the question in the time allowed--consider the following questions when selecting your project topic:
-
-* What version this question would allow me to find an answer in a feasible amount of time?
-* What version of this question would allow me/motivate me to work on this problem even after completing Flatiron School?
-
-### Technical Requirements
-
-Your project must meet the following technical requirements:
-
-1. **_No Off-The-Shelf Datasets_**. This project is a chance for you to highlight your critical thinking and data gathering skills by finding the perfect dataset to answer your question. If a pre-existing dataset exists that you'd like to use, it is okay to use it in your project. However, you should consider combining it with other existing sources of data, modifying the dataset through feature engineering. The goal here is to showcase your ability to find and work with data, so just grabbing Boston Housing Dataset or the MNIST dataset is out of the question. 
-
-2. **_Strong Data Exploration, with at least 4 relevant data visualizations._**  Think of this project as a way for your to showcase your best possible work in every area that matters. There are few skills that impress employers more than the ability to dive into a new dataset and produce engaging visualizations that communicate important information. For this project, anything worth knowing is worth visualizing. Consider all that you have learned, and don't be afraid to dig into more advanced visualization libraries like seaborn to see what you make! You should make use of visualizations whenever possible during this project, not just during the Data Exploration phase--for instance, consider visualizing your confusion matrices rather than just printing them out as text!
-
-3. **_Makes use of Supervised Learning_**. This requirement dovetails with having a well-defined question, because you'll make use of supervised learning to find the answer! It is both acceptable and encouraged to make use of **_Unsupervised Learning_** techniques as needed in your project (for instance, segmentation with clustering algorithms), but the supervised learning should play a central role in answering your question. 
-
-4. **_Explicitly makes use of a Data Science Process such as OSEMN or CRISP-DM_**. This part is fairly straightforward--you should select a Data Science Process to use and then use this to give structure to your project. Each section should be clearly delineated in your Jupyter Notebook.  
-
-5. **_A well-defined question, with a well-defined answer._** Your project should clearly state the question you are trying to answer, and provide any background context needed to understand it. For instance, if you are trying to detect fault lines using Earthquake data, you should provide a brief primer on both the topic and your dataset so that the reader can better understand your topic and approach.  Similarly, the findings of your project should be clearly communicated. Do not just tell your audience the final accuracy of your models--be sure to answer "big picture" questions as well. For instance--why are these findings important or useful? Would you recommend shipping this model to production, or is more work needed? Who are these findings useful to, and why should they care?  **_NOTE:_** Inconclusive results are okay--from a purely scientific perspective, they are no more or less important or valuable than any other kinds of results. If your results are inconclusive, you should discuss what your next steps would be from there. For instance, what do you think it would take to get conclusive results--more data? Different data that was unavailable? Both? 
+7. functions.py. This is where the various functions were kept, as they eventually took up a large portion of the notebook.
 
 
-## Deliverables
+I have also written a blog post about this project: 
 
-For online students, the deliverables for this project consist of the following three components:
+[From Words to Pictures: Visual Engineering in Natural Language Processing](https://terryollila.github.io/from_words_to_pictures)
+A link to the interactive dashboard is forthcoming.
 
-1. A Jupyter notebook for a presentation.
-  * The Jupyter notebook will have two components:
-    1. An **_Abstract_** section that briefly explains your problem, your methodology, and your findings, and business recommendations as a result of your findings. This section should be 1-2 paragraphs long.  
-    2. The technical analysis for a data science audience. This detailed technical analysis should explicitly follow a Data Science Process as outlined in the previous section. It should be well-formatted and organized, and should contain all code, visualizations, and detailed explanations/analysis.
+
+## Abstract
+
+The film industry worldwide does upwards of 50 billion dollars in box office sales, not counting home entertainment revenue, which brings it up closer to 150 billion dollars. Operating within that brick of cash comes with a tremendous amount of risk, with films from major studios sometimes spending a quarter of a billion dollars or more on a single film. Decisions made at smaller studios are no less important to them, as they might be putting their entire livelihoods on the line in the hopes of a hit. And the value of a movie begins with a script.
+
+My premise in creating this project was to ascertain whether a movie's critical rating can be determined to any extent by the text of its screenplay alone. Before attaching a cast and director and crew and all of the other costs associated with creating a cinematic work, having some guidance as to the quality of the script itself can be a benefit in minimizing risk. While an algorithm is no substitute for having a human eye on a screenplay, some level of unbiased machine learning can be leveraged to take a closer look. It is also possible to use this process to vet possible licensing if resources are short and slush piles are large.
+
+As there are many factors going into a movie's rating, such as cast, director, editing, music, costuming, set design and so on, it is not necessarily expected that a movies critical rating can be determined solely by the text of its screenplay. However, there is still much value to be had if any measurable predictability can be found. At the completion of my modeling, I was ultimately able to predict scripts from good movies and bad movies, as rated by metacritic.com, about 65% of the time. Given the other factors in rating, I feel that is a significant enough to create value in the model. Among the various models I tried, some had a better true positive rate, and others had a better false positive rate, so there are some choices there depending on what use cases might be found, such as when it might be more advantageous to find a good movie versus avoiding a bad one.
+
+Recommendations to a given filmmaker would be to use modeling to sort potential screenplays into lists of scripts with higher likelihood of success, using modeling to evaluate scripts in process and step back to consider if it needs more work if the model doesn't like it, and for the screenwriters themselves, to check their scripts against the model and if it comes back with a 'bad' rating, potentially rethink their life choices.
+
+For further research, I would like to create a text ingestion field in the dashboard that allows a user to insert a body of text and have a prediction returned evaluating the content as a screenplay and assigning a good or bad designation. I would create predictability functionality that would allow a user to choose a 'good' or 'bad' setting and have automatically generated text returned back in the style of either a good or bad screenplay. And I would go deeper into the neural networds when modeling, especially toward regression. They showed promise when using them in this project, but there was insufficient time to build them out using pre-made embedding layers and so on.
+
+
+
+# Obtaining Data
+
+All data for this report was gathered using the following three sites:
     
-2. An organized **README.md** file in the GitHub repository containing your project code that describes the contents of the repository. This file should be the source of information for navigating through all the code in your repository. 
+- metacritic.com for movie rating information.
+- rottontomatoes.com for additional movie rating information.
+- SpringfieldSpringfield.co.uk for gathering the screenplay texts.
+
+I the most highly rated and most lowly rated films as listed on metacritic. These extremes were be used for training my classification models to pridict if random movies will be highly rated or lowly rated films.
+
+Knowing that I won't be able to come up with screenplays for every single movie, I took 2000 great and 2000 terrible films, in the hopes of winding up with at least 1000 of each.
+
+
+The rottentomatoes.com information was used for linear regression. Whereas with metacritic we were using only the best and worst for classification, here I was using samples from the entire spectrum for regression analysis.
+
+
+As this is an analysis centered around natural language processing, my primary data source is he screenplay text from every movie.
+
+# Scrubbing Data
+
+In the scrubbing process, I created some script metrics in order to get a sense of how the good scripts might fundamentally differ from the bad.
+
+Some of those metrics were:
+
+
+    good words total:  14020073
+    bad words total:  15477699
+    --------------------------------------------------------------------------------
+    good vocabulary:  172220
+    bad vocabulary:  183840
+    --------------------------------------------------------------------------------
+    good % vocab to total:  0.0123
+    good % vocab to total:  0.0119
+    --------------------------------------------------------------------------------
+    Average Good # Words:  11039.427559055119
+    Average Bad # Words:  10223.050858652576
+    --------------------------------------------------------------------------------
+    Ave difference by words, good vs bad:  0.08
+    --------------------------------------------------------------------------------
+
+    Good ':' ratio:  0.001625
+    Bad ':' ratio:  0.001428
+    Good-Bad % for ':' 0.14
+    --------------------------------------------------
+    Good ';' ratio:  0.000048
+    Bad ';' ratio:  0.000114
+    Good-Bad % for ';' -0.58
+    --------------------------------------------------
+    Good ',' ratio:  0.047181
+    Bad ',' ratio:  0.048443
+    Good-Bad % for ',' -0.03
+    --------------------------------------------------
+    Good '...' ratio:  0.011329
+    Bad '...' ratio:  0.010441
+    Good-Bad % for '...' 0.09
+    --------------------------------------------------
+    Good '!' ratio:  0.010268
+    Bad '!' ratio:  0.014268
+    Good-Bad % for '!' -0.28
+    --------------------------------------------------
+
+
+# Exploratory Data Analysis
+
+This is where a large bulk of the work was performed.
+
+I broke apart the scripts into tokens and used the nlp libraries to score sentiment and separate parts of speech, both coarse and fine. Additional metrics such as word count were generated at this point.
+
+I used latent Derichlet allocation as an unsupervised method to group the films into clusters with similar language patters. This created some startlingly accurate groupings of similar films, with a few humorous exceptions.
+
+Scatter matrices, histograms, and correlation heat maps were generated for all features in order to get a sense of correlation, normality, and linearity. 
+
+Below are the top words for the categories generated by LDA:
+
+    THE TOP 15 WORDS FOR CATEGORY #0
+    ['government', 'fight', 'human', 'war', 'law', 'body', 'children', 'power', 'court', 'country', 'state', 'president', 'death', 'police', 'dr']
     
-3. A blog post showcasing your project, with a focus on your methodology and findings. A well-written blog post about your project will probably be the first thing most recruiters and hiring managers see, so really take the time to polish up this blog post and explain your project, methodology, and findings/business recommendations in a clear, concise manner. This blog post should cover everything important about your project, but remember that your audience for this blog post will largely be non-technical. Your blog post should definitely contain visualizations, code snippets, and anything else you find important, but don't get bogged down trying to explain highly technical concepts. Your blog post should provide a link to the Github repository containing your actual project, for people that want to really dive into the technical aspects of your project.
-* Refer back to the [Blogging Guidelines](https://github.com/learn-co-curriculum/dsc-welcome-blogging) for the technical requirements and blog ideas.
+    
+    THE TOP 15 WORDS FOR CATEGORY #1
+    ['buddy', 'wow', 'team', 'cool', 'uh', 'ball', 'aint', 'ya', 'ah', 'em', 'dog', 'ha', 'game', 'whoa', 'ok']
+    
+    
+    THE TOP 15 WORDS FOR CATEGORY #2
+    ['air', 'safe', 'jim', 'ship', 'war', 'jack', 'officer', 'clear', 'shot', 'shoot', 'fire', 'police', 'john', 'captain', 'gun']
+    
+    
+    THE TOP 15 WORDS FOR CATEGORY #3
+    ['ooh', 'whoa', 'ah', 'christmas', 'cool', 'wow', 'bye', 'daddy', 'charlie', 'sam', 'honey', 'jack', 'um', 'uh', 'mom']
+    
+    
+    THE TOP 15 WORDS FOR CATEGORY #4
+    ['uh', 'grunts', 'radio', 'crowd', 'chatter', 'cheering', 'speaking', 'indistinct', 'continues', 'laughs', 'playing', 'laughing', 'sighs', 'chuckles', 'music']
+    
+    
+    THE TOP 15 WORDS FOR CATEGORY #5
+    ['aint', 'poor', 'sister', 'darling', 'war', 'brother', 'child', 'death', 'lady', 'children', 'king', 'lord', 'dear', 'shall', 'mrs']
+    
+    
+    THE TOP 15 WORDS FOR CATEGORY #6
+    ['gun', 'brother', 'goddamn', 'motherf**ker', 'dude', 'f**ked', 'em', 'yo', 'jesus', 'b***h', 'a**', 'f**kin', 'aint', 'f**king', 'f**k']
+    
+    
+    THE TOP 15 WORDS FOR CATEGORY #7
+    ['buy', 'women', 'parents', 'york', 'bye', 'perfect', 'dinner', 'book', 'party', 'honey', 'movie', 'girls', 'sex', 'married', 'mom']
+    
+    
+    THE TOP 15 WORDS FOR CATEGORY #8
+    ['white', 'women', 'ii', 'sort', 'mmm', 'mm', 'wow', 'alright', 'mmhmm', 'john', 'bob', 'hmm', 'ah', 'um', 'uh']
+    
+    
+    THE TOP 15 WORDS FOR CATEGORY #9
+    ['groaning', 'breathing', 'chuckles', 'continues', 'music', 'groans', 'screams', 'panting', 'mary', 'sighs', 'michael', 'grunting', 'grunts', 'gasps', 'screaming']
+    
 
-Note: On-campus students may have different deliverables, please speak with your instructor.
+# Modeling
 
-### Rubric 
+For modeling, I used the extreme data from metacritic to train the models, then the 0-100 data from rottentomatoes for testing.
 
-Online students can find a PDF of the rubric for the final capstone project [here](https://github.com/learn-co-curriculum/dsc-capstone-project-v2/blob/master/capstone_project_rubric.pdf). _Note: On-campus students may have different requirements, please speak with your instructor._
+My first set of models employ TFIDF Vectorization using a variety of classifiers. I then go into using only the engineered features such as parts of speech and word count. From there, I merge the TFIDF matrix with the features. Finally, I use a support vector classifier with TFIDF, then feed the results into a random forest model using engineered features. This produced the best result, with 68% accuracy, 64% true positive rate, and 72% true negative rate:
+
+![important features](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/conf_matrix.png)
+
+I used support vector classifiers, decision trees, logistic regression, random forests, XG Boost, Naive-Bayes, and neural networks.
+
+I followed this up with a regression analysis using only the rottentomatoes data, but those results were negligible with about a .1 r^2 test score.
+
+# Visualization
+
+For bringing the statistical information about the screenplays to life, I used an html dashboard that I coded using the plotly, dash, and wordcloud libraries in Python.
+A word cloud showed the top words from each side that were mutually exclusive to each other:
+
+![thumbs up/down word cloud](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/two_thumbs-md.png)
+
+I created a horizontal bar chart to display some of the words that had overall importance in the modeling, which switched between the three by means of radio buttons, and to demonstrate the correlation for each.
+
+![important features](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/all_words.png)
+
+And I used an interactive dropdown to show numerous features such as unique words, sentiment, and parts of speech. Here is an example:
+
+![word feature distribution plots](https://raw.githubusercontent.com/terryollila/dsc-capstone-project-v2-online-ds-ft-100719/master/flatirons_capstone_2/images/dist_example.png)
+
+# Interpretation
+
+Using the above attributes and more, I was able to create a predictive models that would ascertain whether a script was from a top-rated movie or a bottom-rated movie about 65% of the time. Within that models was some flexibility, however. Some models were better at predicting whether a movie would be 'good' (a true positive), while others were better at predicting whether a movie would be 'bad' (a true negative). The purpose of the prediction would dictate which model to employ.
+
+Some recommendations on what can be done with this information:
+
+Studios looking to cull out poor scripts from their stock should use the TFIDF with neural network model, which has an 81% rating for correctly predicting a bad scripts, and a 64% accuracy rating overall.
+
+Filmmakers looking create the largest set of good scripts from the total should use the random boost with script attributes model, which has a 69% chance of correctly predicting a good script, though only a 55% accuracy score overall.
+
+Filmmakers and screenwriters looking to find the most balanced filter for finding good screenplays and culling out the bad should look to the stacked model with support vector classifier using TFIDF followed by a random forest classifier using script attributes, which had the highest overall accuracy rate of 68%. If you're a screenwriter seeing your work coming up on the bad side, and especially if it contains a number of the "thumbs down" words noted above, you might want to start rethinking your life choices.
 
 
-## Final Project Proposals (2 project ideas)
+The scope of this idea is large, and there are numerous opportunities for further study. A few I would like to peruse are:
 
-Selecting the right topic and selecting a problem with the appropriate scope can make or break a good project before you even begin. When starting, try to think up at least 2 different project ideas to explore that you can discuss with your instructor.  Consider the following questions when coming up with your project. 
+Using TFIDF on the word clouds to get a different, possibly more accurate take on what words are realistically more prevalent throughout a large body of texts.
 
-### Project Ideation Questions
+Continue modeling with neural networks, especially with GloVe or other existing word embedding libraries.
 
-1. What question/questions are you trying to solve?
-  * What are the outcomes you think you will find (could use mutually exclusive collectively exhaustive for this)? Why do they matter?
-  * How would a person or business take action upon learning the results of your project? How will your findings be _useful_?
-  * What version this question would allow me to find an answer in 2-3 days?
-  * What version of this question would allow me/motivate me to work on this problem even after completing Flatiron School?
+Continue further work on regression analysis to predict no just whether a scripts is good or bad, but to predict the actual score it will receive on a scale of 0 to 100.
 
-2. What are some data sources that would allow you to answer this?
-  * What is the ideal data you would hope to gather to answer this question?  
-  * Potentially missing data, that could cause omitted variable bias?
-3. Is this a classification task? A regression task? Both?
-4. What are the challenges or obstacles you foresee with this project?
-5. What are your next steps moving forward?
-
-### Example Student Project
-
-To give you a frame of reference, take a look at this amazing [technical report](https://github.com/paulinaczheng/twitter_flu_tracking) from a previous student that used tweet data to predict the weekly number of flu cases during flu season. Pay attention to how well structured the project is, and how much she relies on great visualizations to tell her story for her. Your explanations don't have to be wordy--a visualization is worth a thousand words!
- 
-
-# Summary
-
-The Capstone Project and project review are the most critical part of the program. They give you a chance to both bring together all the skills you've learned into realistic projects and to practice key "business judgement" and communication skills that you otherwise might not get as much practice with.  Most importantly, they provide employers with very strong signal about your technical abilities, and allow you to show the world what an amazing Data Scientist you've become!
-
-The projects are serious and important. They are not graded, but they can be passed and they can be failed. Take the project seriously, put the time in, ask for help from your peers or instructors early and often if you need it, and treat the review as a job interview and you'll do great. We're rooting for you to succeed and we're only going to ask you to take a review again if we believe that you need to. We'll also provide open and honest feedback so you can improve as quickly and efficiently as possible.
-
-We don't expect you to remember all of the terms or to get all of the answers right. If in doubt, be honest. If you don't know something, say so. If you can't remember it, just say so. It's very unusual for someone to complete a project review without being asked a question they're unsure of, we know you might be nervous which may affect your performance. Just be as honest, precise and focused as you can be, and you'll do great!
+In the dashboard, provide a text entry or upload option where a script could be entered and a 'good' or 'bad' rating could be assigned, to easily determine where a given script might lie.
