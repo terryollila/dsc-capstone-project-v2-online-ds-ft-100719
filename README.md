@@ -32,7 +32,9 @@ First, some important files for navigating this repo:
 I have also written a blog post about this project: 
 
 [From Words to Pictures: Visual Engineering in Natural Language Processing](https://terryollila.github.io/from_words_to_pictures)
-A link to the interactive dashboard is forthcoming.
+
+Interactive project dashboard:
+[Screenplay Science Dashboard](https://lit-hollows-89977.herokuapp.com/)
 
 
 ## Abstract

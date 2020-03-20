@@ -43,6 +43,12 @@ h3 {
     max-width: 760px;
 }
 
+#byline {
+    font-style: italic;
+    text-align: left;
+    spacing: .8;
+}
+
 .textBlock {
     text-align: left;
     width: 100%;
